@@ -1,0 +1,249 @@
+CREATE TYPE "requisite_type" AS ENUM (
+  'Any',
+  'All',
+  'Co'
+);
+
+CREATE TABLE "mas_category_templates" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_en" varchar(255) UNIQUE,
+  "categorie_type_id" int NOT NULL,
+  "root_id" int,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "student_curricula" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "name" varchar(255) NOT NULL,
+  "student_code" int NOT NULL,
+  "curriculum_id" int NOT NULL,
+  "is_system" bool NOT NULL DEFAULT false,
+  "is_default" bool NOT NULL DEFAULT false,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "student_curriculum_courses" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "student_curriculum_id" int NOT NULL,
+  "semester" int NOT NULL,
+  "year" int NOT NULL,
+  "course_no" int,
+  "categorie_type_id" int,
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_majors" (
+  "id" int PRIMARY KEY,
+  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_en" varchar(255) UNIQUE,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_curricula" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "major_id" int NOT NULL,
+  "code" varchar(255) UNIQUE,
+  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_en" varchar(255) UNIQUE,
+  "short_name" varchar(10),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_categorie_types" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_en" varchar(255) UNIQUE,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_categorie_requirements" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "category_id" int NOT NULL,
+  "regex" varchar(255),
+  "credit" int,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_categories" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "name_th" varchar(255) NOT NULL,
+  "name_en" varchar(255),
+  "curriculum_id" int,
+  "at_least" bool,
+  "credit" int,
+  "categorie_type_id" int,
+  "note" varchar(255),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_category_relationships" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "parent_category_id" int NOT NULL,
+  "child_category_id" int NOT NULL,
+  "require_all" bool,
+  "position" int NOT NULL DEFAULT 1,
+  "question_id" int NOT NULL,
+  "choice_id" int NOT NULL,
+  "cross_category_id" int,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_curriculum_questions" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "curriculum_id" int,
+  "name_th" varchar(255) NOT NULL,
+  "name_en" varchar(255),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_curriculum_question_choices" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "question_id" int NOT NULL,
+  "position" int NOT NULL DEFAULT 1,
+  "name_th" varchar(255) NOT NULL,
+  "name_en" varchar(255),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_category_courses" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "category_id" int NOT NULL,
+  "course_no" int NOT NULL,
+  "semester" int,
+  "year" int,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_course_requisites" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "category_courses_id" int NOT NULL,
+  "related_course_no" int NOT NULL,
+  "requisite_type" requisite_type NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "sys_course_details" (
+  "course_no" int PRIMARY KEY,
+  "title_long_th" varchar(255) UNIQUE NOT NULL,
+  "title_long_en" varchar(255) UNIQUE NOT NULL,
+  "title_short_en" varchar(255),
+  "course_desc_th" varchar(255),
+  "course_desc_en" varchar(255),
+  "credit" int NOT NULL DEFAULT 0,
+  "prerequisite" varchar(255),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "student_curriculum_question_answers" (
+  "id" int PRIMARY KEY,
+  "student_id" int NOT NULL,
+  "curriculum_id" int NOT NULL,
+  "question_id" int NOT NULL,
+  "choice_id" int NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "accounts" (
+  "cmuitaccount" varchar(255) PRIMARY KEY,
+  "prename" varchar(255),
+  "firstname" varchar(255) NOT NULL,
+  "lastname" varchar(255) NOT NULL,
+  "department" varchar(255) NOT NULL,
+  "account_type" int NOT NULL,
+  "organization" int NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "students" (
+  "code" int PRIMARY KEY,
+  "is_term_accepted" bool NOT NULL DEFAULT false,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "account_types" (
+  "id" int PRIMARY KEY,
+  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_en" varchar(255) UNIQUE NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE "organizations" (
+  "id" int PRIMARY KEY,
+  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_en" varchar(255) UNIQUE NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE "mas_category_templates" ADD FOREIGN KEY ("categorie_type_id") REFERENCES "sys_categorie_types" ("id");
+
+ALTER TABLE "mas_category_templates" ADD FOREIGN KEY ("root_id") REFERENCES "sys_categories" ("id");
+
+ALTER TABLE "student_curricula" ADD FOREIGN KEY ("student_code") REFERENCES "students" ("code") ON DELETE CASCADE;
+
+ALTER TABLE "student_curricula" ADD FOREIGN KEY ("curriculum_id") REFERENCES "sys_curricula" ("id");
+
+ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("student_curriculum_id") REFERENCES "student_curricula" ("id") ON DELETE CASCADE;
+
+
+ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("course_no") REFERENCES "sys_course_details" ("course_no");
+
+ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("categorie_type_id") REFERENCES "sys_categorie_types" ("id");
+
+ALTER TABLE "sys_curricula" ADD FOREIGN KEY ("major_id") REFERENCES "sys_majors" ("id");
+
+ALTER TABLE "sys_categorie_requirements" ADD FOREIGN KEY ("category_id") REFERENCES "sys_categories" ("id");
+
+ALTER TABLE "sys_categories" ADD FOREIGN KEY ("curriculum_id") REFERENCES "sys_curricula" ("id");
+
+ALTER TABLE "sys_categories" ADD FOREIGN KEY ("categorie_type_id") REFERENCES "sys_categorie_types" ("id");
+
+ALTER TABLE "sys_category_relationships" ADD FOREIGN KEY ("parent_category_id") REFERENCES "sys_categories" ("id");
+
+ALTER TABLE "sys_category_relationships" ADD FOREIGN KEY ("child_category_id") REFERENCES "sys_categories" ("id");
+
+ALTER TABLE "sys_category_relationships" ADD FOREIGN KEY ("question_id") REFERENCES "sys_curriculum_questions" ("id");
+
+ALTER TABLE "sys_category_relationships" ADD FOREIGN KEY ("choice_id") REFERENCES "sys_curriculum_question_choices" ("id");
+
+ALTER TABLE "sys_category_relationships" ADD FOREIGN KEY ("cross_category_id") REFERENCES "sys_categories" ("id");
+
+ALTER TABLE "sys_curriculum_questions" ADD FOREIGN KEY ("curriculum_id") REFERENCES "sys_curricula" ("id");
+
+ALTER TABLE "sys_curriculum_question_choices" ADD FOREIGN KEY ("question_id") REFERENCES "sys_curriculum_questions" ("id");
+
+ALTER TABLE "sys_category_courses" ADD FOREIGN KEY ("category_id") REFERENCES "sys_categories" ("id");
+
+ALTER TABLE "sys_category_courses" ADD FOREIGN KEY ("course_no") REFERENCES "sys_course_details" ("course_no");
+
+ALTER TABLE "sys_course_requisites" ADD FOREIGN KEY ("category_courses_id") REFERENCES "sys_category_courses" ("id");
+
+ALTER TABLE "student_curriculum_question_answers" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("code") ON DELETE CASCADE;
+
+ALTER TABLE "student_curriculum_question_answers" ADD FOREIGN KEY ("curriculum_id") REFERENCES "student_curricula" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "student_curriculum_question_answers" ADD FOREIGN KEY ("question_id") REFERENCES "sys_curriculum_questions" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "student_curriculum_question_answers" ADD FOREIGN KEY ("choice_id") REFERENCES "sys_curriculum_question_choices" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "accounts" ADD FOREIGN KEY ("account_type") REFERENCES "account_types" ("id");
+
+ALTER TABLE "accounts" ADD FOREIGN KEY ("organization") REFERENCES "organizations" ("id");
