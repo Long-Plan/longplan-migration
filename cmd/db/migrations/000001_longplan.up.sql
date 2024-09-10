@@ -136,7 +136,8 @@ CREATE TABLE "sys_course_requisites" (
 );
 
 CREATE TABLE "sys_course_details" (
-  "course_no" varchar(6) PRIMARY KEY,
+  "id" BIGSERIAL PRIMARY KEY,
+  "course_no" varchar(6) UNIQUE NOT NULL,
   "title_long_th" varchar(255) UNIQUE,
   "title_long_en" varchar(255) UNIQUE,
   "title_short_en" varchar(255),
