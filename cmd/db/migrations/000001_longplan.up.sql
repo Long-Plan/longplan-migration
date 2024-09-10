@@ -6,7 +6,7 @@ CREATE TYPE "requisite_type" AS ENUM (
 
 CREATE TABLE "mas_category_templates" (
   "id" BIGSERIAL PRIMARY KEY,
-  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_th" varchar(255) UNIQUE,
   "name_en" varchar(255) UNIQUE,
   "categorie_type_id" int NOT NULL,
   "root_id" int,
@@ -30,14 +30,14 @@ CREATE TABLE "student_curriculum_courses" (
   "student_curriculum_id" int NOT NULL,
   "semester" int NOT NULL,
   "year" int NOT NULL,
-  "course_no" int,
+  "course_no" varchar(6),
   "categorie_type_id" int,
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE "sys_majors" (
   "id" int PRIMARY KEY,
-  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_th" varchar(255) UNIQUE,
   "name_en" varchar(255) UNIQUE,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -47,7 +47,7 @@ CREATE TABLE "sys_curricula" (
   "id" BIGSERIAL PRIMARY KEY,
   "major_id" int NOT NULL,
   "code" varchar(255) UNIQUE,
-  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_th" varchar(255) UNIQUE,
   "name_en" varchar(255) UNIQUE,
   "short_name" varchar(10),
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -56,7 +56,7 @@ CREATE TABLE "sys_curricula" (
 
 CREATE TABLE "sys_categorie_types" (
   "id" BIGSERIAL PRIMARY KEY,
-  "name_th" varchar(255) UNIQUE NOT NULL,
+  "name_th" varchar(255) UNIQUE,
   "name_en" varchar(255) UNIQUE,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -73,13 +73,13 @@ CREATE TABLE "sys_categorie_requirements" (
 
 CREATE TABLE "sys_categories" (
   "id" BIGSERIAL PRIMARY KEY,
-  "name_th" varchar(255) NOT NULL,
+  "name_th" varchar(255),
   "name_en" varchar(255),
   "curriculum_id" int,
   "at_least" bool,
   "credit" int,
   "categorie_type_id" int,
-  "note" varchar(255),
+  "note" TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -90,8 +90,8 @@ CREATE TABLE "sys_category_relationships" (
   "child_category_id" int NOT NULL,
   "require_all" bool,
   "position" int NOT NULL DEFAULT 1,
-  "question_id" int NOT NULL,
-  "choice_id" int NOT NULL,
+  "question_id" int,
+  "choice_id" int,
   "cross_category_id" int,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -100,7 +100,7 @@ CREATE TABLE "sys_category_relationships" (
 CREATE TABLE "sys_curriculum_questions" (
   "id" BIGSERIAL PRIMARY KEY,
   "curriculum_id" int,
-  "name_th" varchar(255) NOT NULL,
+  "name_th" varchar(255),
   "name_en" varchar(255),
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -110,7 +110,7 @@ CREATE TABLE "sys_curriculum_question_choices" (
   "id" BIGSERIAL PRIMARY KEY,
   "question_id" int NOT NULL,
   "position" int NOT NULL DEFAULT 1,
-  "name_th" varchar(255) NOT NULL,
+  "name_th" varchar(255),
   "name_en" varchar(255),
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -119,7 +119,7 @@ CREATE TABLE "sys_curriculum_question_choices" (
 CREATE TABLE "sys_category_courses" (
   "id" BIGSERIAL PRIMARY KEY,
   "category_id" int NOT NULL,
-  "course_no" int NOT NULL,
+  "course_no" varchar(6),
   "semester" int,
   "year" int,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -129,16 +129,16 @@ CREATE TABLE "sys_category_courses" (
 CREATE TABLE "sys_course_requisites" (
   "id" BIGSERIAL PRIMARY KEY,
   "category_courses_id" int NOT NULL,
-  "related_course_no" int NOT NULL,
+  "related_course_no" varchar(6) NOT NULL,
   "requisite_type" requisite_type NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE "sys_course_details" (
-  "course_no" int PRIMARY KEY,
-  "title_long_th" varchar(255) UNIQUE NOT NULL,
-  "title_long_en" varchar(255) UNIQUE NOT NULL,
+  "course_no" varchar(6) PRIMARY KEY,
+  "title_long_th" varchar(255) UNIQUE,
+  "title_long_en" varchar(255) UNIQUE,
   "title_short_en" varchar(255),
   "course_desc_th" varchar(255),
   "course_desc_en" varchar(255),
@@ -179,16 +179,16 @@ CREATE TABLE "students" (
 
 CREATE TABLE "account_types" (
   "id" int PRIMARY KEY,
-  "name_th" varchar(255) UNIQUE NOT NULL,
-  "name_en" varchar(255) UNIQUE NOT NULL,
+  "name_th" varchar(255) UNIQUE,
+  "name_en" varchar(255) UNIQUE,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE "organizations" (
   "id" int PRIMARY KEY,
-  "name_th" varchar(255) UNIQUE NOT NULL,
-  "name_en" varchar(255) UNIQUE NOT NULL,
+  "name_th" varchar(255) UNIQUE,
+  "name_en" varchar(255) UNIQUE,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -202,9 +202,6 @@ ALTER TABLE "student_curricula" ADD FOREIGN KEY ("student_code") REFERENCES "stu
 ALTER TABLE "student_curricula" ADD FOREIGN KEY ("curriculum_id") REFERENCES "sys_curricula" ("id");
 
 ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("student_curriculum_id") REFERENCES "student_curricula" ("id") ON DELETE CASCADE;
-
-
-ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("course_no") REFERENCES "sys_course_details" ("course_no");
 
 ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("categorie_type_id") REFERENCES "sys_categorie_types" ("id");
 
@@ -231,8 +228,6 @@ ALTER TABLE "sys_curriculum_questions" ADD FOREIGN KEY ("curriculum_id") REFEREN
 ALTER TABLE "sys_curriculum_question_choices" ADD FOREIGN KEY ("question_id") REFERENCES "sys_curriculum_questions" ("id");
 
 ALTER TABLE "sys_category_courses" ADD FOREIGN KEY ("category_id") REFERENCES "sys_categories" ("id");
-
-ALTER TABLE "sys_category_courses" ADD FOREIGN KEY ("course_no") REFERENCES "sys_course_details" ("course_no");
 
 ALTER TABLE "sys_course_requisites" ADD FOREIGN KEY ("category_courses_id") REFERENCES "sys_category_courses" ("id");
 
