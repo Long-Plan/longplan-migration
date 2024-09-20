@@ -8,7 +8,7 @@ CREATE TABLE "mas_category_templates" (
   "id" BIGSERIAL PRIMARY KEY,
   "name_th" varchar(255) UNIQUE,
   "name_en" varchar(255) UNIQUE,
-  "categorie_type_id" int NOT NULL,
+  "category_type_id" int NOT NULL,
   "root_id" int,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -31,7 +31,7 @@ CREATE TABLE "student_curriculum_courses" (
   "semester" int NOT NULL,
   "year" int NOT NULL,
   "course_no" varchar(6),
-  "categorie_type_id" int,
+  "category_type_id" int,
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE "sys_curricula" (
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE "sys_categorie_types" (
+CREATE TABLE "sys_category_types" (
   "id" BIGSERIAL PRIMARY KEY,
   "name_th" varchar(255) UNIQUE,
   "name_en" varchar(255) UNIQUE,
@@ -62,7 +62,7 @@ CREATE TABLE "sys_categorie_types" (
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE "sys_categorie_requirements" (
+CREATE TABLE "sys_category_requirements" (
   "id" BIGSERIAL PRIMARY KEY,
   "category_id" int NOT NULL,
   "regex" varchar(255),
@@ -78,7 +78,7 @@ CREATE TABLE "sys_categories" (
   "curriculum_id" int,
   "at_least" bool,
   "credit" int,
-  "categorie_type_id" int,
+  "category_type_id" int,
   "note" TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -88,6 +88,7 @@ CREATE TABLE "sys_category_relationships" (
   "id" BIGSERIAL PRIMARY KEY,
   "parent_category_id" int NOT NULL,
   "child_category_id" int NOT NULL,
+  "curriculum_id" int,
   "require_all" bool,
   "position" int NOT NULL DEFAULT 1,
   "question_id" int,
@@ -126,7 +127,7 @@ CREATE TABLE "sys_category_courses" (
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE "sys_course_requisites" (
+CREATE TABLE "sys_category_course_requisites" (
   "id" BIGSERIAL PRIMARY KEY,
   "category_courses_id" int NOT NULL,
   "related_course_no" varchar(6) NOT NULL,
@@ -194,7 +195,7 @@ CREATE TABLE "organizations" (
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-ALTER TABLE "mas_category_templates" ADD FOREIGN KEY ("categorie_type_id") REFERENCES "sys_categorie_types" ("id");
+ALTER TABLE "mas_category_templates" ADD FOREIGN KEY ("category_type_id") REFERENCES "sys_category_types" ("id");
 
 ALTER TABLE "mas_category_templates" ADD FOREIGN KEY ("root_id") REFERENCES "sys_categories" ("id");
 
@@ -204,19 +205,21 @@ ALTER TABLE "student_curricula" ADD FOREIGN KEY ("curriculum_id") REFERENCES "sy
 
 ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("student_curriculum_id") REFERENCES "student_curricula" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("categorie_type_id") REFERENCES "sys_categorie_types" ("id");
+ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("category_type_id") REFERENCES "sys_category_types" ("id");
 
 ALTER TABLE "sys_curricula" ADD FOREIGN KEY ("major_id") REFERENCES "sys_majors" ("id");
 
-ALTER TABLE "sys_categorie_requirements" ADD FOREIGN KEY ("category_id") REFERENCES "sys_categories" ("id");
+ALTER TABLE "sys_category_requirements" ADD FOREIGN KEY ("category_id") REFERENCES "sys_categories" ("id");
 
 ALTER TABLE "sys_categories" ADD FOREIGN KEY ("curriculum_id") REFERENCES "sys_curricula" ("id");
 
-ALTER TABLE "sys_categories" ADD FOREIGN KEY ("categorie_type_id") REFERENCES "sys_categorie_types" ("id");
+ALTER TABLE "sys_categories" ADD FOREIGN KEY ("category_type_id") REFERENCES "sys_category_types" ("id");
 
 ALTER TABLE "sys_category_relationships" ADD FOREIGN KEY ("parent_category_id") REFERENCES "sys_categories" ("id");
 
 ALTER TABLE "sys_category_relationships" ADD FOREIGN KEY ("child_category_id") REFERENCES "sys_categories" ("id");
+
+ALTER TABLE "sys_category_relationships" ADD FOREIGN KEY ("curriculum_id") REFERENCES "sys_curricula" ("id");
 
 ALTER TABLE "sys_category_relationships" ADD FOREIGN KEY ("question_id") REFERENCES "sys_curriculum_questions" ("id");
 
@@ -230,7 +233,7 @@ ALTER TABLE "sys_curriculum_question_choices" ADD FOREIGN KEY ("question_id") RE
 
 ALTER TABLE "sys_category_courses" ADD FOREIGN KEY ("category_id") REFERENCES "sys_categories" ("id");
 
-ALTER TABLE "sys_course_requisites" ADD FOREIGN KEY ("category_courses_id") REFERENCES "sys_category_courses" ("id");
+ALTER TABLE "sys_category_course_requisites" ADD FOREIGN KEY ("category_courses_id") REFERENCES "sys_category_courses" ("id");
 
 ALTER TABLE "student_curriculum_question_answers" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("code") ON DELETE CASCADE;
 
