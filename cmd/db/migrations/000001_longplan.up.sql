@@ -89,7 +89,7 @@ CREATE TABLE "sys_curriculum_question_choices" (
 CREATE TABLE "sys_category_courses" (
   "id" BIGSERIAL PRIMARY KEY,
   "category_id" int NOT NULL,
-  "course_no" varchar(6),
+  "course_no" varchar(6) NOT NULL,
   "semester" int,
   "year" int,
   "credit" int NOT NULL DEFAULT 0,
@@ -137,14 +137,13 @@ CREATE TABLE "student_curriculum_courses" (
   "semester" int NOT NULL,
   "year" int NOT NULL,
   "course_no" varchar(6),
-  "category_type_id" int,
+  "category_id" int,
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE "student_curriculum_question_answers" (
   "id" int PRIMARY KEY,
-  "student_id" int NOT NULL,
-  "curriculum_id" int NOT NULL,
+  "student_curriculum_id" int NOT NULL,
   "question_id" int NOT NULL,
   "choice_id" int NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -215,9 +214,7 @@ ALTER TABLE "sys_category_courses" ADD FOREIGN KEY ("category_id") REFERENCES "s
 
 ALTER TABLE "sys_category_course_requisites" ADD FOREIGN KEY ("category_courses_id") REFERENCES "sys_category_courses" ("id");
 
-ALTER TABLE "student_curriculum_question_answers" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("code") ON DELETE CASCADE;
-
-ALTER TABLE "student_curriculum_question_answers" ADD FOREIGN KEY ("curriculum_id") REFERENCES "student_curricula" ("id") ON DELETE CASCADE;
+ALTER TABLE "student_curriculum_question_answers" ADD FOREIGN KEY ("student_curriculum_id") REFERENCES "student_curricula" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "student_curriculum_question_answers" ADD FOREIGN KEY ("question_id") REFERENCES "sys_curriculum_questions" ("id") ON DELETE CASCADE;
 
@@ -229,4 +226,4 @@ ALTER TABLE "student_curricula" ADD FOREIGN KEY ("curriculum_id") REFERENCES "sy
 
 ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("student_curriculum_id") REFERENCES "student_curricula" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("category_type_id") REFERENCES "sys_category_types" ("id");
+ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("category_id") REFERENCES "sys_categories" ("id");
