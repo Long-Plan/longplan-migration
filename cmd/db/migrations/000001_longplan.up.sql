@@ -142,7 +142,7 @@ CREATE TABLE "student_curriculum_courses" (
 );
 
 CREATE TABLE "student_curriculum_question_answers" (
-  "id" int PRIMARY KEY,
+  "id" BIGSERIAL PRIMARY KEY,
   "student_curriculum_id" int NOT NULL,
   "question_id" int NOT NULL,
   "choice_id" int NOT NULL,
