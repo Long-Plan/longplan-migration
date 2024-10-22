@@ -27,6 +27,7 @@ CREATE TABLE "sys_category_types" (
   "id" BIGSERIAL PRIMARY KEY,
   "name_th" varchar(255) UNIQUE,
   "name_en" varchar(255) UNIQUE,
+  "short_name" varchar(10),
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -48,6 +49,9 @@ CREATE TABLE "sys_categories" (
   "at_least" bool,
   "credit" int,
   "category_type_id" int,
+  "is_display" bool NOT NULL DEFAULT false,
+  "primary_color" varchar(20),
+  "secondary_color" varchar(20),
   "note" TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -126,7 +130,6 @@ CREATE TABLE "student_curricula" (
   "student_code" int NOT NULL,
   "curriculum_id" int NOT NULL,
   "is_system" bool NOT NULL DEFAULT false,
-  "is_default" bool NOT NULL DEFAULT false,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -164,6 +167,7 @@ CREATE TABLE "accounts" (
 CREATE TABLE "students" (
   "code" int PRIMARY KEY,
   "major_id" int NULL,
+  "student_curriculum_id" int,
   "is_term_accepted" bool NOT NULL DEFAULT false,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -227,3 +231,5 @@ ALTER TABLE "student_curricula" ADD FOREIGN KEY ("curriculum_id") REFERENCES "sy
 ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("student_curriculum_id") REFERENCES "student_curricula" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "student_curriculum_courses" ADD FOREIGN KEY ("category_id") REFERENCES "sys_categories" ("id");
+
+ALTER TABLE "students" ADD FOREIGN KEY ("student_curriculum_id") REFERENCES "student_curricula" ("id") ON DELETE CASCADE;

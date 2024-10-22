@@ -1,25 +1,25 @@
 INSERT INTO sys_majors (id,name_th,name_en) VALUES (10608,'วิศวกรรมคอมพิวเตอร์','Computer Engineering');
 INSERT INTO sys_majors (id,name_th,name_en) VALUES (10610,'วิศวกรรมระบบสารสนเทศและเครือข่าย','Information Systems and Network Engineering');
 
-INSERT INTO sys_category_types (name_th,name_en) VALUES ('หมวดวิชาศึกษาทั่วไป','General Education');
-INSERT INTO sys_category_types (name_th,name_en) VALUES ('หมวดวิชาเฉพาะ','Field of Specialization');
-INSERT INTO sys_category_types (name_th,name_en) VALUES ('หมวดวิชาเลือกเสรี','Free Electives');
-INSERT INTO sys_category_types (name_th,name_en) VALUES ('วิชาเอก','Major');
-INSERT INTO sys_category_types (name_th,name_en) VALUES ('วิชาโท','Minor');
-INSERT INTO sys_category_types (name_th,name_en) VALUES ('ประสบการณ์ภาคสนาม','Field Experience Training');
+INSERT INTO sys_category_types (name_th,name_en,short_name) VALUES ('หมวดวิชาศึกษาทั่วไป','General Education','GE');
+INSERT INTO sys_category_types (name_th,name_en,short_name) VALUES ('หมวดวิชาเฉพาะ','Field of Specialization','FS');
+INSERT INTO sys_category_types (name_th,name_en,short_name) VALUES ('หมวดวิชาเลือกเสรี','Free Electives','FE');
+INSERT INTO sys_category_types (name_th,name_en,short_name) VALUES ('วิชาเอก','Major','Major');
+INSERT INTO sys_category_types (name_th,name_en,short_name) VALUES ('วิชาโท','Minor','Minor');
+INSERT INTO sys_category_types (name_th,name_en,short_name) VALUES ('ประสบการณ์ภาคสนาม','Field Experience Training','FET');
 INSERT INTO sys_category_types (name_th,name_en) VALUES ('หลักสูตร','Curriculum');
 
 INSERT INTO sys_curricula (major_id,name_th,short_name) VALUES (10608,'หลักสูตรวิศวกรรมคอมพิวเตอร์ หลักสูตรปรับปรุง 2563','CPE63');
 
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Total',1,true,143,7,'หมายเหตุ ได้มีการจัดอบรมเตรียมความพร้อมให้แก่นักศึกษาก่อนไปสหกิจศึกษา จำนวนไม่น้อยกว่า 30 ชั่วโมง');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('1. General Education',1,false,30,1,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('2. Field of Specialization',1,true,103,2,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('3 .Free Electives',1,true,6,3,'Any courses can be selected with the approval from the student’s academic advisor.');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Total',1,true,143,7,true,'-','-','หมายเหตุ ได้มีการจัดอบรมเตรียมความพร้อมให้แก่นักศึกษาก่อนไปสหกิจศึกษา จำนวนไม่น้อยกว่า 30 ชั่วโมง');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('General Education',1,false,30,1,true,'#A78C39','#FFF8E2','');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Field of Specialization',1,true,103,2,true,'#4351CC','#E7EAFF','');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Free Electives',1,true,6,3,true,'#505152','#EBEAEA','Any courses can be selected with the approval from the student’s academic advisor.');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Required Courses',1,false,23,NULL,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('1.1 Learner Person',1,false,15,NULL,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('1.2 Innovative Co-creator',1,false,4,NULL,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('1.3 Active Citizen',1,false,4,NULL,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Elective from 3 Categories',1,false,7,NULL,'');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Learner Person',1,false,15,NULL,true,'#F0C32F','#FFF8E2','');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Innovative Co-creator',1,false,4,NULL,true,'#F67F4C','#FFEBE3','');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Active Citizen',1,false,4,NULL,true,'#BF504D','#EDDCDC','');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Elective from 3 Categories',1,false,7,NULL,true,'#A37358','#F5E5DE','');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('',1,NULL,NULL,NULL,'');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('',1,NULL,NULL,NULL,'3 credits must be selected from the following courses');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('',1,NULL,NULL,NULL,'');
@@ -27,12 +27,12 @@ INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Learner Person',1,NULL,NULL,NULL,'');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Innovative Co-creator',1,NULL,NULL,NULL,'');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Active Citizen',1,NULL,NULL,NULL,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('2.1 Core Courses',1,false,33,NULL,'');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Core Courses',1,false,33,NULL,true,'#3BA3EE','#E5F4FD','');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('2.2 Major',1,true,70,4,'Required courses in 2.2.1 and 2.2.2 must have at least 36 credit hours for course id in 300 and 400 categories with at least 18 credit hours for course id in 400 category.');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('2.2.1 Required Courses',1,false,52,NULL,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('2.2.2 Major Electives',1,true,18,NULL,'There must be at least 9 credits from 261xxx.');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('2.2.1 Required Courses',1,false,58,NULL,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('2.2.2 Major Electives',1,true,12,NULL,'There must be at least 9 credits from 261xxx.');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Required Courses',1,false,52,NULL,true,'#4351CC','#E7EAFF','');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Major Electives',1,true,18,NULL,true,'#4351CC','#E7EAFF','There must be at least 9 credits from 261xxx.');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Required Courses',1,false,58,NULL,true,'#4351CC','#E7EAFF','');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,is_display,primary_color,secondary_color,note) VALUES ('Major Electives',1,true,12,NULL,true,'#4351CC','#E7EAFF','There must be at least 9 credits from 261xxx.');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Technology for Application',1,NULL,NULL,NULL,'');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Technology and Software Methods',1,NULL,NULL,NULL,'');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Basic Structure of the Systems',1,NULL,NULL,NULL,'');
@@ -40,7 +40,7 @@ INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Field Experience Training',1,NULL,NULL,6,'');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('',1,NULL,NULL,NULL,'');
 INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Field Experience Training',1,NULL,NULL,6,'');
-INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('2.3 Minor (if any)',1,true,15,5,'According to the Chiang Mai University regulation on the Minor curriculum for the Chiang Mai University student, if students choose to have a minor degree in a curriculum at the Chiang Mai university, they can register those courses not less than 15 credits with the academic advisor’s approval. Hence, the total credits for the whole curriculum is increased at least 15 credits.');
+INSERT INTO sys_categories (name_en,curriculum_id,at_least,credit,category_type_id,note) VALUES ('Minor (if any)',1,true,15,5,'According to the Chiang Mai University regulation on the Minor curriculum for the Chiang Mai University student, if students choose to have a minor degree in a curriculum at the Chiang Mai university, they can register those courses not less than 15 credits with the academic advisor’s approval. Hence, the total credits for the whole curriculum is increased at least 15 credits.');
 
 INSERT INTO sys_curriculum_questions (curriculum_id,name_en) VALUES (1,'Plan');
 
